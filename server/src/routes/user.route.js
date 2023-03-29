@@ -4,37 +4,38 @@ import favoriteController from "../controllers/favorite.controller.js"
 import userController from "../controllers/user.controller.js"
 import requestHandler from "../handlers/request.handler.js"
 import userModel from "../models/user.model.js"
+import responseHandler from "../handlers/response.handler.js"
 import tokenMiddleware from "../middlewares/token.middleware.js"
 
 
 const router = express.Router()
 
 router.post(
-    '/signup',
+    "/signup",
     body("username")
-        .exists().withMessage("username is required")
-        .isLength({min: 5}).withMessage("username minimum 8 characters")
-        .custom(async value => {
-            const user = await userModel.findOne({username: value});
-            if(user) return Promise.reject("username already used. Please try different username");
-        }),
+      .exists().withMessage("username is required")
+      .isLength({ min: 8 }).withMessage("username minimum 8 characters")
+      .custom(async value => {
+        const user = await userModel.findOne({ username: value });
+        if (user) return Promise.reject("username already used");
+      }),
     body("password")
-        .exists().withMessage("password is required")
-        .isLength({min: 6}).withMessage("password minimum 8 characters"),
+      .exists().withMessage("password is required")
+      .isLength({ min: 8 }).withMessage("password minimum 8 characters"),
     body("confirmPassword")
-        .exists().withMessage("confirmPassword is required")
-        .isLength({min: 6}).withMessage("confirm password minimum 8 characters")
-        .custom((value, {req}) => {
-                if(value!==req.body.password) throw new Error("confirm password not match");
-                return true;
-            }),
+      .exists().withMessage("confirmPassword is required")
+      .isLength({ min: 8 }).withMessage("confirmPassword minimum 8 characters")
+      .custom((value, { req }) => {
+        if (value !== req.body.password) throw new Error("confirmPassword not match");
+        return true;
+      }),
     body("displayName")
-        .exists().withMessage("displayName is required")
-        .isLength({min: 6}).withMessage("displayName minimum 8 characters"),
+      .exists().withMessage("displayName is required")
+      .isLength({ min: 8 }).withMessage("displayName minimum 8 characters"),
     requestHandler.validate,
     userController.signup
+  );
 
-);
 
 router.post(
     '/signin',
@@ -67,8 +68,7 @@ router.put(
         }),
     requestHandler.validate,
     userController.updatePassword
-
-)
+);
 
 
 
@@ -77,13 +77,13 @@ router.get(
     tokenMiddleware.auth,
     userController.getInfo
 
-)
+);
 
 router.get(
     '/favorites',
     tokenMiddleware.auth,
     favoriteController.getFavoriteOfUser
-)
+);
 
 router.post(
     '/favorites',
@@ -103,13 +103,13 @@ router.post(
     requestHandler.validate,
     favoriteController.addFavorite
 
-)
+);
 
 
 router.delete(
     "/favorites/:favoriteId",
     tokenMiddleware.auth,
     favoriteController.removeFavorite
-)
+);
 
 export default router;

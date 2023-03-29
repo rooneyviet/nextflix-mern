@@ -3,7 +3,7 @@ const responseWithData = (res, statusCode, data) => res.status(statusCode).json(
 const error = (res) => responseWithData(res, 500, {
     status: 500,
     message: "Oops! Something wrong!"
-})
+});
 
 const badRequest = (res, message) => responseWithData(res, 400, {
     status:400, 
@@ -31,4 +31,4 @@ export default {
     created,
     unauthorized,
     notfound
-}
+};

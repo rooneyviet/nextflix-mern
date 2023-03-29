@@ -14,7 +14,7 @@ const tokenDecode = (req) => {
     } catch {
         return false;
     }
-}
+};
 
 const auth  = async (req, res, next) => {
     const tokenDecoded = tokenDecode(req);
@@ -27,6 +27,6 @@ const auth  = async (req, res, next) => {
 
     req.user = user;
     next();
-}
+};
 
 export default { auth, tokenDecode};

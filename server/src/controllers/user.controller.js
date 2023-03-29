@@ -1,9 +1,16 @@
 import userModel from "../models/user.model.js";
 import jsonwebtoken from "jsonwebtoken"
 import responseHandler from "../handlers/response.handler.js";
+
 const signup = async (req, res) => {
+    console.log(`signup api`);
+    
     try {
+        console.log(`signup api 1`);
+        console.log('Got body:', req.body);
         const {username, password, displayName} = req.body;
+
+        console.log(`${username} ${password} ${displayName}`);
 
         const checkUser = await userModel.findOne({username});
         if(checkUser) {
@@ -15,7 +22,11 @@ const signup = async (req, res) => {
         user.username  =username;
         user.setPassword(password);
 
+        console.log(`Please 1`);
+
         await user.save();
+
+        console.log(`Please 2`);
 
         const token = jsonwebtoken.sign(
             {data: user.id},
@@ -23,7 +34,9 @@ const signup = async (req, res) => {
             {expiresIn: "24h"}
         )
 
-        responseHandler.created(res, {
+        console.log(`Please 3`);
+
+        return responseHandler.created(res, {
             token,
             ...user._doc,
             id: user.id
@@ -31,8 +44,9 @@ const signup = async (req, res) => {
         
     }catch {
         responseHandler.error(res);
+        console.log(`Error!!!`);
     }
-}
+};
 
 const signin = async (req, res) => {
     try {
@@ -41,19 +55,20 @@ const signin = async (req, res) => {
         const user = await userModel.findOne({username}).select("username password salt id displayName");
 
         if(!user) return responseHandler.badRequest(res, "User not exists");
+    
 
         if(!user.validPassword(password)) return responseHandler.badRequest(res, "Wrong username or password");
 
         const token = jsonwebtoken.sign(
-            {data: user.id},
+            { data: user.id },
             process.env.TOKEN_SECRET,
-            {expiresIn: "24h"}
-        )
+            { expiresIn: "24h" }
+          );
 
         user.password = undefined;
         user.salt =undefined;
 
-        responseHandler.ok(res, {
+        return responseHandler.ok(res, {
             token,
             ...user._doc,
             id: user.id
@@ -62,7 +77,7 @@ const signin = async (req, res) => {
     } catch {
         responseHandler.error(res);
     }
-}
+};
 
 
 const updatePassword = async (req, res) => {
@@ -83,7 +98,7 @@ const updatePassword = async (req, res) => {
     }catch {
         responseHandler.error(res);
     }
-}
+};
 
 
 const getInfo = async (req, res) => {
@@ -96,7 +111,7 @@ const getInfo = async (req, res) => {
     } catch {
         responseHandler.error(res);
     }
-}
+};
 
 
 export default {
@@ -104,4 +119,4 @@ export default {
     signin,
     getInfo,
     updatePassword
-}
+};
