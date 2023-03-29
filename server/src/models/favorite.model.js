@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import modelOptions from './model.options'
+import modelOptions from './model.options.js'
 
 const favoriteModel = mongoose.model(
     "Favorite",
@@ -7,10 +7,6 @@ const favoriteModel = mongoose.model(
         user: {
             type: Schema.Types.ObjectId,
             ref: 'User',
-            required: true,
-          },
-        content: {
-            type: String,
             required: true,
           },
           mediaType: {

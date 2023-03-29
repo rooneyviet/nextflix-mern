@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose";
-import modelOptions from './model.options'
+import modelOptions from './model.options.js'
 
 const reviewModel = mongoose.model(
     "Review",
