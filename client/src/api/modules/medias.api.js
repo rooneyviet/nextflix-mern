@@ -1,10 +1,10 @@
-import privateClient from "../client/private.client";
-import publicClient from "../client/public.client";
+import privateClient from "../client/private.client.js";
+import publicClient from "../client/public.client.js";
 
 
 const mediasEndpoint = {
     listMedias: ({mediaType, mediaCategory, page}) => `${mediaType}/${mediaCategory}?page=${page}`,
-    detailMedia: ({mediaType, mediaId}) => `${mediaType}/${mediaId}`,
+    detailMedia: ({mediaType, mediaId}) => `${mediaType}/detail/${mediaId}`,
     searchMedias:  ({mediaType, query, page}) => `${mediaType}/search?query=${query}&page=${page}`,
 };
 

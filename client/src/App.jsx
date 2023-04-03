@@ -7,6 +7,10 @@ import MainLayout from "./components/layout/MainLayout.jsx";
 import routes from "./routes/routes";
 import PageWrapper from "./components/common/PageWrapper.jsx";
 
+import "swiper/css";
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 const App = () => {
   const {themeMode} = useSelector((state)=> state.themeMode);
 
@@ -18,8 +22,8 @@ const App = () => {
           hideProgressBar={false}
           newestOnTop={false}
           closeOnClick
-          pauseOnHover
           pauseOnFocusLoss
+          pauseOnHover
           theme={themeMode}
 
           />
