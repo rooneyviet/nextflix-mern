@@ -13,7 +13,7 @@ const userAPI = {
     signin: async ({username, password}) => {
         try {
             const response = await publicClient.post(
-                userEndpoint.signin({username, password})
+                userEndpoint.signin,{username, password}
             );
 
             return {response};
@@ -26,7 +26,8 @@ const userAPI = {
     signup: async ({username, password, confirmPassword, displayName}) => {
         try {
             const response = await publicClient.post(
-                userEndpoint.signup({username, password, confirmPassword, displayName})
+                userEndpoint.signup,
+                {username, password, confirmPassword, displayName}
             );
 
             return {response};
@@ -39,7 +40,7 @@ const userAPI = {
     getInfo: async () => {
         try {
             const response = await privateClient.get(
-                userEndpoint.getInfo(),
+                userEndpoint.getInfo,
             );
 
             return {response};
@@ -52,7 +53,8 @@ const userAPI = {
     passwordUpdate: async ({password, newPassword, confirmNewPassword}) => {
         try {
             const response = await privateClient.post(
-                userEndpoint.passwordUpdate({password, newPassword, confirmNewPassword})
+                userEndpoint.passwordUpdate,
+                {password, newPassword, confirmNewPassword}
             );
 
             return {response};

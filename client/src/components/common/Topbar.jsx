@@ -19,6 +19,7 @@ import { setThemeMode } from "../../redux/features/themeModeSlice";
 import Logo from "./Logo";
 import { Link } from "react-router-dom";
 import UserMenu from "./UserMenu";
+import Sidebar from "./Sidebar";
 
 const ScrollAppBar = ({ children, window }) => {
   const { themeMode } = useSelector((state) => state.themeMode);
@@ -50,6 +51,9 @@ const Topbar = () => {
   const { themeMode } = useSelector((state) => state.themeMode);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
   const dispatch = useDispatch();
 
   const onSwitchTheme = () => {
@@ -60,6 +64,7 @@ const Topbar = () => {
 
   return (
     <>
+      <Sidebar open={sidebarOpen} toggleSidebar={toggleSidebar} />
       <ScrollAppBar>
         <AppBar elevation={0} sx={{ zIndex: 9999 }}>
           <Toolbar
@@ -128,7 +133,15 @@ const Topbar = () => {
               </IconButton>
             </Box>
 
-            <UserMenu />
+            <Stack spacing={3} direction="row" alignItems="center">
+              {!user && <Button
+                variant="contained"
+                onClick={() => dispatch(setAuthModalOpen(true))}
+              >
+                sign in
+              </Button>}
+            </Stack>
+            {user && <UserMenu />}
           </Toolbar>
         </AppBar>
       </ScrollAppBar>
