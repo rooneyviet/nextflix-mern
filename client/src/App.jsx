@@ -16,17 +16,7 @@ const App = () => {
 
   return (
     <ThemeProvider theme={themeConfigs.custom({mode: themeMode})}>
-        <ToastContainer 
-          position="bottom-left"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          pauseOnFocusLoss
-          pauseOnHover
-          theme={themeMode}
-
-          />
+        
 
         <CssBaseline/>
         <BrowserRouter>

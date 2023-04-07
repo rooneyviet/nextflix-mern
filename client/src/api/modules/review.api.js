@@ -11,7 +11,8 @@ const reviewApi = {
     addReview: async ({mediaId, mediaType, mediaTitle, mediaPoster, content}) => {
         try {
             const response = await privateClient.post(
-                reviewEndpoint.addReview({mediaId, mediaType, mediaTitle, mediaPoster, content})
+                reviewEndpoint.addReview,
+                {mediaId, mediaType, mediaTitle, mediaPoster, content}
             );
 
             return {response};
@@ -24,7 +25,7 @@ const reviewApi = {
     listReviews: async () => {
         try {
             const response = await privateClient.get(
-                reviewEndpoint.listReviews(),
+                reviewEndpoint.listReviews,
             );
 
             return {response};
@@ -38,7 +39,8 @@ const reviewApi = {
     removeReview: async ({reviewId}) => {
         try {
             const response = await privateClient.delete(
-                reviewEndpoint.removeReview({ reviewId})
+                reviewEndpoint.removeReview,
+                { reviewId}
             );
 
             return {response};

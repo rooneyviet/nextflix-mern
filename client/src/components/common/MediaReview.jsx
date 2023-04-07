@@ -19,7 +19,7 @@ const ReviewItem = ({ review, onRemoved }) => {
     if (onRequest) return;
     setOnRequest(true);
 
-    const { response, err } = await reviewApi.remove({ reviewId: review.id });
+    const { response, err } = await reviewApi.removeReview({ reviewId: review.id });
 
     if (err) toast.error(err.message);
     if (response) onRemoved(review.id);
@@ -92,6 +92,7 @@ const MediaReview = ({ reviews, media, mediaType }) => {
   const onAddReview = async () => {
     if (onRequest) return;
     setOnRequest(true);
+    console.log("1");
 
     const body = {
       content,
@@ -101,13 +102,13 @@ const MediaReview = ({ reviews, media, mediaType }) => {
       mediaPoster: media.poster_path
     };
 
-    const { response, err } = await reviewApi.add(body);
-
+    const { response, err } = await reviewApi.addReview(body);
+    console.log("2");
     setOnRequest(false);
-
-    if (err) toast.error(err.message);
+    
+    if (err) console.log(err);
     if (response) {
-      toast.success("Post review success");
+      //toast.success("Post review success");
 
       setFilteredReviews([...filteredReviews, response]);
       setReviewCount(reviewCount + 1);

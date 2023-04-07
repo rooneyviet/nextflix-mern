@@ -67,7 +67,6 @@ const MediaDetail = () => {
     if (!user) return dispatch(setAuthModalOpen(true));
 
     if (onRequest) return;
-
     if (isFavorite) {
       onRemoveFavorite();
       return;
@@ -83,15 +82,15 @@ const MediaDetail = () => {
       mediaRate: media.vote_average
     };
 
-    const { response, err } = await favoriteApi.add(body);
-
+    const { response, err } = await favoriteApi.addFavorite(body);
     setOnRequest(false);
-
-    if (err) toast.error(err.message);
+    console.log("6");
+    //if (err) toast.error(err.message);
+    if (err) console.log(err);
     if (response) {
       dispatch(addFavorite(response));
       setIsFavorite(true);
-      toast.success("Add favorite success");
+      //toast.success("Add favorite success");
     }
   };
 
@@ -101,7 +100,7 @@ const MediaDetail = () => {
 
     const favorite = listFavorites.find(e => e.mediaId.toString() === media.id.toString());
 
-    const { response, err } = await favoriteApi.remove({ favoriteId: favorite.id });
+    const { response, err } = await favoriteApi.removeFavorite({ favoriteId: favorite.id });
 
     setOnRequest(false);
 

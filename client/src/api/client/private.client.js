@@ -11,13 +11,8 @@ const privateClient = axios.create({
 })
 
 privateClient.interceptors.request.use(async config => {
-    return {
-        ...config,
-        header: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${localStorage.getItem("actkn")}`
-        }
-    }
+    config.headers['Authorization'] = `Bearer ${localStorage.getItem('actkn')}`;
+        return config;
 })
 
 privateClient.interceptors.response.use((response) => {

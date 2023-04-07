@@ -10,8 +10,11 @@ export const userSlice = createSlice({
         setUser: (state, action)=> {
             if(action.payload ===null) {
                 localStorage.removeItem("actkn");
+                localStorage.removeItem("userItem")
             } else {
                 if(action.payload.token) localStorage.setItem("actkn", action.payload.token);
+                localStorage.setItem("userItem", JSON.stringify(action.payload));
+                console.log(action.payload);
             }
 
             state.user = action.payload;

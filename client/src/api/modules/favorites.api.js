@@ -23,7 +23,8 @@ const favoritesAPI = {
     addFavorite: async ({mediaId, mediaType, mediaTitle, mediaPoster, mediaRate}) => {
         try {
             const response = await privateClient.post(
-                favoriteEndpoint.addFavorite({mediaId, mediaType, mediaTitle, mediaPoster, mediaRate})
+                favoriteEndpoint.addFavorite,
+                {mediaId, mediaType, mediaTitle, mediaPoster, mediaRate}
             );
 
             return {response};
@@ -36,7 +37,8 @@ const favoritesAPI = {
     removeFavorite: async ({favoriteId}) => {
         try {
             const response = await privateClient.delete(
-                favoriteEndpoint.removeFavorite({favoriteId})
+                favoriteEndpoint.removeFavorite,
+                {favoriteId}
             );
 
             return {response};
