@@ -35,11 +35,11 @@ const MediaDetail = () => {
 
   const { user, listFavorites } = useSelector((state) => state.user);
 
-  let listfavorites = [];
 
   const [media, setMedia] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
   const [onRequest, setOnRequest] = useState(false);
+  const [listfavorites, setListfavorite] = useState([]);
   const [genres, setGenres] = useState([]);
 
   const dispatch = useDispatch();
@@ -53,11 +53,10 @@ const MediaDetail = () => {
       
       if (err) console.log(err);
       if (response) {
-        listfavorites = response.filter(e => e.mediaId.toString() === mediaId.toString());
-        if(listfavorites.length >0) {
-          console.log("kakakkakaka" + JSON.stringify(listfavorites[0]));
-          //listfavorites.push(listfavorites[0]);
-          //dispatch(addFavorite(ssssaaa[0]));
+        const newlisttt = response.filter(e => e.mediaId.toString() === mediaId.toString());
+        if(newlisttt.length >0) {
+          console.log("kakakkakaka" + JSON.stringify(newlisttt[0]));
+          setListfavorite([...listfavorites, newlisttt[0]]);
           setIsFavorite(true);
         }
       }
@@ -109,20 +108,14 @@ const MediaDetail = () => {
     //if (err) toast.error(err.message);
     if (err) console.log(err);
     if (response) {
-      //dispatch(addFavorite(response));
-      console.log("wppwqpqwp " +response);
-      listfavorites.push(response);
+      setListfavorite([...listfavorites, response]);
       setIsFavorite(true);
-      //toast.success("Add favorite success");
     }
   };
 
   const onRemoveFavorite = async () => {
     if (onRequest) return;
     setOnRequest(true);
-
-    console.log(listfavorites.length + "Sssa");
-    console.log(listfavorites[0]);
 
     const favorite = listfavorites.find(e => e.mediaId.toString() === media.id.toString());
 
@@ -132,9 +125,8 @@ const MediaDetail = () => {
 
     if (err) console.log("hereslsllslslsl" + err);
     if (response) {
-      //dispatch(removeFavorite(favorite));
+      setIsFavorite([...listfavorites].filter(e => e.mediaId.toString() !== mediaId.toString()));
       setIsFavorite(false);
-      //toast.success("Remove favorite success");
     }
   };
 
