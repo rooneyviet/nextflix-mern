@@ -27,7 +27,11 @@ export const userSlice = createSlice({
             state.listFavorites = [...state.listFavorites].filter(e => e.mediaId.toString() !== mediaId.toString())
         },
         addFavorite: (state, action) => {
+            console.log("already list" + JSON.stringify(state.listFavorites));
+            console.log("new item" + JSON.stringify(action.payload));
+            
             state.listFavorites = [action.payload, ...state.listFavorites];
+            console.log("after list" + JSON.stringify(state.listFavorites));
         }
     }
 });

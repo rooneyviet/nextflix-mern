@@ -35,6 +35,8 @@ const MediaDetail = () => {
 
   const { user, listFavorites } = useSelector((state) => state.user);
 
+  let listfavorites = [];
+
   const [media, setMedia] = useState();
   const [isFavorite, setIsFavorite] = useState(false);
   const [onRequest, setOnRequest] = useState(false);
@@ -43,6 +45,26 @@ const MediaDetail = () => {
   const dispatch = useDispatch();
 
   const videoRef = useRef(null);
+
+
+  useEffect(() => {
+    const getFavorites = async () => {
+      const { response, err } = await favoriteApi.listFavorites();
+      
+      if (err) console.log(err);
+      if (response) {
+        listfavorites = response.filter(e => e.mediaId.toString() === mediaId.toString());
+        if(listfavorites.length >0) {
+          console.log("kakakkakaka" + JSON.stringify(listfavorites[0]));
+          //listfavorites.push(listfavorites[0]);
+          //dispatch(addFavorite(ssssaaa[0]));
+          setIsFavorite(true);
+        }
+      }
+    };
+
+    getFavorites();
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -53,7 +75,7 @@ const MediaDetail = () => {
 
       if (response) {
         setMedia(response);
-        setIsFavorite(response.isFavorite);
+        //setIsFavorite(response.isFavorite);
         setGenres(response.genres.splice(0, 2));
       }
 
@@ -84,11 +106,12 @@ const MediaDetail = () => {
 
     const { response, err } = await favoriteApi.addFavorite(body);
     setOnRequest(false);
-    console.log("6");
     //if (err) toast.error(err.message);
     if (err) console.log(err);
     if (response) {
-      dispatch(addFavorite(response));
+      //dispatch(addFavorite(response));
+      console.log("wppwqpqwp " +response);
+      listfavorites.push(response);
       setIsFavorite(true);
       //toast.success("Add favorite success");
     }
@@ -98,17 +121,20 @@ const MediaDetail = () => {
     if (onRequest) return;
     setOnRequest(true);
 
-    const favorite = listFavorites.find(e => e.mediaId.toString() === media.id.toString());
+    console.log(listfavorites.length + "Sssa");
+    console.log(listfavorites[0]);
 
-    const { response, err } = await favoriteApi.removeFavorite({ favoriteId: favorite.id });
+    const favorite = listfavorites.find(e => e.mediaId.toString() === media.id.toString());
 
+    const { response, err } = await favoriteApi.removeFavorite({ favoriteId: favorite._id });
+    
     setOnRequest(false);
 
-    if (err) toast.error(err.message);
+    if (err) console.log("hereslsllslslsl" + err);
     if (response) {
-      dispatch(removeFavorite(favorite));
+      //dispatch(removeFavorite(favorite));
       setIsFavorite(false);
-      toast.success("Remove favorite success");
+      //toast.success("Remove favorite success");
     }
   };
 

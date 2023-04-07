@@ -20,6 +20,7 @@ privateClient.interceptors.response.use((response) => {
     return response;
 
 }, (err) => {
+    console.log(err);
     throw err.response.data;
 });
 

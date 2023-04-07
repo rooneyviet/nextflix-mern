@@ -15,11 +15,11 @@ const FavoriteItem = ({ media, onRemoved }) => {
   const dispatch = useDispatch();
 
   const [onRequest, setOnRequest] = useState(false);
-
+  
   const onRemove = async () => {
     if (onRequest) return;
     setOnRequest(true);
-    const { response, err } = await favoriteApi.remove({ favoriteId: media.id });
+    const { response, err } = await favoriteApi.removeFavorite({ favoriteId: media.id });
     setOnRequest(false);
 
     if (err) toast.error(err.message);
@@ -59,7 +59,7 @@ const FavoriteList = () => {
   useEffect(() => {
     const getFavorites = async () => {
       dispatch(setGlobalLoading(true));
-      const { response, err } = await favoriteApi.getList();
+      const { response, err } = await favoriteApi.listFavorites();
       dispatch(setGlobalLoading(false));
 
       if (err) toast.error(err.message);

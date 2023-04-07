@@ -30,17 +30,20 @@ const removeReview  =async (req, res) => {
     try {
         const {reviewId} = req.params;
 
-        const review = await reviewModel.findOne({
+        const reviewSomething = await reviewModel.findOne({
             _id: reviewId,
             user: req.user.id
         })
 
-        if(!review) return responseHandler.notfound(res);
+        if(!reviewSomething) return responseHandler.notfound(res);
+        if(reviewSomething) console.log("found1");
 
-        await review.remove();
+        //await review.remove();
+        await reviewSomething.deleteOne();
 
          responseHandler.ok(res);
-    } catch {
+    } catch(err) {
+        console.log(err);
         responseHandler.error(res);
     }
 };
@@ -48,13 +51,15 @@ const removeReview  =async (req, res) => {
 
 const getReviewOfUser  =async (req, res) => {
     try {
-        const reviews = reviewModel.find({
+        
+        const reviews = await reviewModel.find({
             user: req.user.id
         }).sort("-createdAt");
 
 
         responseHandler.ok(res, reviews);
-    } catch {
+    } catch(err) {
+        console.log(err);
         responseHandler.error(res);
     }
 };

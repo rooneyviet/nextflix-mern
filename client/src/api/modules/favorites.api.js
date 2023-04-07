@@ -10,11 +10,14 @@ const favoritesAPI = {
     listFavorites: async () => {
         try {
             const response = await privateClient.get(
-                favoriteEndpoint.listFavorites()
+                favoriteEndpoint.listFavorites
             );
+
+            console.log('response ' +response);
 
             return {response};
         } catch (err) {
+            console.log(err);
             return {
                 err
             };
@@ -37,8 +40,7 @@ const favoritesAPI = {
     removeFavorite: async ({favoriteId}) => {
         try {
             const response = await privateClient.delete(
-                favoriteEndpoint.removeFavorite,
-                {favoriteId}
+                favoriteEndpoint.removeFavorite({favoriteId})
             );
 
             return {response};

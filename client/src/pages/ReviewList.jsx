@@ -15,17 +15,22 @@ import { routesGen } from "../routes/routes";
 
 const ReviewItem = ({ review, onRemoved }) => {
   const [onRequest, setOnRequest] = useState(false);
+  
 
   const onRemove = async () => {
     if (onRequest) return;
+    console.log("reviewid"+review.id);
+    console.log("review_id"+review._id);
     setOnRequest(true);
-    const { response, err } = await reviewApi.remove({ reviewId: review.id });
+    const { response, err } = await reviewApi.removeReview({ reviewId: review._id });
     setOnRequest(false);
 
-    if (err) toast.error(err.message);
+    //if (err) toast.error(err.message);
+    if (err) console.log(err);
     if (response) {
-      toast.success("Remove review success");
-      onRemoved(review.id);
+      //toast.success("Remove review success");
+      console.log("Remove review success");
+      onRemoved(review._id);
     }
   };
 
@@ -40,7 +45,7 @@ const ReviewItem = ({ review, onRemoved }) => {
     }}>
       <Box sx={{ width: { xs: 0, md: "10%" } }}>
         <Link
-          to={routesGen.mediaDetail(review.mediaType, review.mediaid)}
+          to={routesGen.mediaDetail(review.mediaType, review.mediaId)}
           style={{ color: "unset", textDecoration: "none" }}
         >
           <Box sx={{
@@ -56,7 +61,7 @@ const ReviewItem = ({ review, onRemoved }) => {
       }}>
         <Stack spacing={1}>
           <Link
-            to={routesGen.mediaDetail(review.mediaType, review.mediaid)}
+            to={routesGen.mediaDetail(review.mediaType, review.mediaId)}
             style={{ color: "unset", textDecoration: "none" }}
           >
             <Typography
@@ -105,10 +110,11 @@ const ReviewList = () => {
   useEffect(() => {
     const getReviews = async () => {
       dispatch(setGlobalLoading(true));
-      const { response, err } = await reviewApi.getList();
+      const { response, err } = await reviewApi.listReviews();
       dispatch(setGlobalLoading(false));
 
-      if (err) toast.error(err.message);
+      //if (err) toast.error(err.message);
+      if (err) console.log(err);
       if (response) {
         setCount(response.length);
         setReviews([...response]);
@@ -126,7 +132,7 @@ const ReviewList = () => {
 
   const onRemoved = (id) => {
     console.log({ reviews });
-    const newReviews = [...reviews].filter(e => e.id !== id);
+    const newReviews = [...reviews].filter(e => e._id !== id);
     console.log({ newReviews });
     setReviews(newReviews);
     setFilteredReviews([...newReviews].splice(0, page * skip));
@@ -138,7 +144,7 @@ const ReviewList = () => {
       <Container header={`Your reviews (${count})`}>
         <Stack spacing={2}>
           {filteredReviews.map((item) => (
-            <Box key={item.id}>
+            <Box key={item._id}>
               <ReviewItem review={item} onRemoved={onRemoved} />
               <Divider sx={{
                 display: { xs: "block", md: "none" }
